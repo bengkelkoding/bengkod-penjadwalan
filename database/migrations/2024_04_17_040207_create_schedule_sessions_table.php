@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('schedule_sessions', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->string('fullname');
-            $table->enum('type', ['DOSEN', 'MAHASISWA']);
-            $table->string('password');
-            $table->string('profile_picture')->nullable();
-            $table->rememberToken();
+            $table->foreignId('schedule_id')->constrained();
+            $table->enum('day', ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU']);
+            $table->time('time_start');
+            $table->time('time_end');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('schedule_sessions');
     }
 };
