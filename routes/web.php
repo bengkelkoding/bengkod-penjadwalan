@@ -18,9 +18,11 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/mahasiswa', function () {
-    return view('student.dashboardStudent');
+Route::get('/Mahasiswa', function () {
+    return view('student.index');
 });
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
