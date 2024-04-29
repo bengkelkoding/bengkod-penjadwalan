@@ -15,14 +15,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('index');
 });
 
-Route::get('/Mahasiswa', function () {
+Route::get('/mahasiswa', function () {
     return view('student.index');
 });
 
+Route::get('/lecture', function () {
+    return view('lecture.index');
+});
 
+Route::get('/admin', function () {
+    return view('admin.index');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
