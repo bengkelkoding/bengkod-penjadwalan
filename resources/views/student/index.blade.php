@@ -12,5 +12,22 @@
     @include('components.navbar')
     @include('components.buttomNav')
 
+
+    {{-- <video id="videoElement" autoplay></video> --}}
+    
+
+    <script>
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoElement = document.getElementById('videoElement');
+                videoElement.srcObject = stream;
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+            }
+        });
+    </script>
+
+
 </body>
 </html>

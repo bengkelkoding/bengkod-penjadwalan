@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+<<<<<<< HEAD
+        <x-partials.head></x-partials.head>
+    </head>
+    <body>
+        <p>guest</p>
+        <div class="font-sans text-gray-900 antialiased">
+            {{ $slot }}
+        </div>
+        <x-partials.footer></x-partials.footer>
+    </body>
+    @stack('script')
+
+</html>
+=======
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -28,3 +42,4 @@
         </div>
     </body>
 </html>
+>>>>>>> a79ccdc15febd208b3272fa5b1eccc249dc2121d

@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('home');
+    return view('index');
 });
 
-Route::get('/Mahasiswa', function () {
+Route::get('/mahasiswa', function () {
     return view('student.index');
 });
 
