@@ -83,11 +83,11 @@
             
         </div>
 
-        <div class="box2 h-[70vh] md:col-span-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-center items-center">
-            <div class="grid p-6 w-full grid-cols-2 gap-4">
+        <div class="box2 md:h-[70vh] md:col-span-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-center items-center">
+            <div class="grid p-6 w-full gap-4 grid-cols-1 md:grid-cols-2 ">
                 
-                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center">
-                    <div class="flex  gap-3 w-full px-5">
+                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center hover:bg-slate-100">
+                    <div class="flex  gap-3 w-full px-5 flex-wrap">
                         <div class="round1 border border-[#82bd69] bg-[#e9f5e3] p-3 rounded-full w-20 h-20 flex justify-center items-center">
                             <div class="round2 bg-[#82bd69] rounded-full p-2 flex justify-center items-center">
                                 <svg class="w-10 h-10 text-[#e9f5e3] dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -104,8 +104,8 @@
 
                 </div>
                 
-                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center">
-                    <div class="flex  gap-3 w-full px-5">
+                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center hover:bg-slate-100">
+                    <div class="flex gap-3 w-full px-5 flex-wrap">
                         <div class="round1 border border-[#786abe] bg-[#e7e9f8] p-3 rounded-full w-20 h-20 flex justify-center items-center">
                             <div class="round2 bg-[#786abe] rounded-full p-2 flex justify-center items-center">
                                 <svg class="w-10 h-10 text-[#e7e9f8] dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -122,8 +122,8 @@
 
                 </div>
                 
-                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center">
-                    <div class="flex  gap-3 w-full px-5">
+                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center hover:bg-slate-100">
+                    <div class="flex  gap-3 w-full px-5 flex-wrap">
                         <div class="round1 border border-[#e3e728] bg-[#f2f9c8] p-3 rounded-full w-20 h-20 flex justify-center items-center">
                             <div class="round2 bg-[#e3e728] rounded-full p-2 flex justify-center items-center">
                                 <svg class="w-10 h-10 text-[#f2f9c8] dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -140,8 +140,8 @@
 
                 </div>
 
-                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center">
-                    <div class="flex  gap-3 w-full px-5">
+                <div class="w-full h-[30vh] shadow-xl rounded-md flex items-center hover:bg-slate-100">
+                    <div class="flex  gap-3 w-full px-5 flex-wrap">
                         <div class="round1 border border-[#eaa035] bg-[#faeacb] p-3 rounded-full w-20 h-20 flex justify-center items-center">
                             <div class="round2 bg-[#eaa035] rounded-full p-2 flex justify-center items-center">
                                 <svg class="w-10 h-10 text-[#faeacb] dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
