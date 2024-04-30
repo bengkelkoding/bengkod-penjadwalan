@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('schedule_sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('schedule_id')->constrained();
+            $table->foreignId('classroom_id')->nullable()->constrained();
             $table->enum('day', ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU', 'MINGGU']);
             $table->time('time_start');
             $table->time('time_end');
