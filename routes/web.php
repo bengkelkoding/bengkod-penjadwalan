@@ -9,6 +9,10 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/login', function () {
+    return view('home');
+});
+
 Route::get('/mahasiswa', function () {
     return view('student.index');
 });
