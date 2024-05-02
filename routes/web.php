@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule.index');
     Route::post('/schedules/import', [ScheduleController::class, 'import'])->name('schedule.import');
+    Route::post('/insertSchedule', [ScheduleController::class, 'insertSchedule'])->name('insertSchedule');
+    Route::post('/updateSchedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('updateSchedule');
+    Route::get('/deleteSchedule/{id}', [ScheduleController::class, 'deleteSchedule'])->name('deleteSchedule');
 });
 
 require __DIR__.'/auth.php';
