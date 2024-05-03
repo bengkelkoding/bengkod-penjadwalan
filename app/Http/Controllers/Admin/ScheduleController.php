@@ -51,26 +51,15 @@ class ScheduleController extends Controller
             'dosen_id' => $dosen_id,
         ]);
 
-        $jadwals = [
-            [
-                'day' => $request->day,
-                'name' => $request->name,
-                'time_start' => $request->time_start,
-                'time_end' => $request->time_end,
-            ],
-            [
-                'day' => $request->day2,
-                'name' => $request->name2,
-                'time_start' => $request->time_start2,
-                'time_end' => $request->time_end2,
-            ],
-            [
-                'day' => $request->day3,
-                'name' => $request->name3,
-                'time_start' => $request->time_start3,
-                'time_end' => $request->time_end3,
-            ],
-        ];
+        $jadwals = [];
+        for ($i = 1; $i <= 3; $i++) {
+            $jadwals[] = [
+                'day' => $request->{"day$i"},
+                'name' => $request->{"name$i"},
+                'time_start' => $request->{"time_start$i"},
+                'time_end' => $request->{"time_end$i"},
+            ];
+        }
 
         foreach ($jadwals as $jadwal) {
             // Periksa jika jadwal tidak kosong
@@ -93,6 +82,16 @@ class ScheduleController extends Controller
 
     public function updateSchedule(Request $request, $id)
     {
+        $scheduleData = $request->only(['nama_matkul', 'kode_kelompok', 'kuota', 'jumlah_mahasiswa']);
+        $schedule = Schedule::find($id);
+        // Update 'kode_matkul', and 'sks' berdasarkan matkul yanga da ditabel schedule sendiri
+        $kode_matkul = Schedule::where('nama_matkul', $request->nama_matkul)->value('kode_matkul');
+        $sks = Schedule::where('nama_matkul', $request->nama_matkul)->value('sks');
+        $scheduleData['kode_matkul'] = $kode_matkul;
+        $scheduleData['sks'] = $sks;
+        // Update Schedule
+        $schedule->update($scheduleData);
+
         // Update 'nip' to 'dosen_id'
         if ($request->has('nip')) {
             $dosen = Dosen::where('nip', $request->nip)->first();
@@ -104,26 +103,38 @@ class ScheduleController extends Controller
             }
         }
 
-        $scheduleData = $request->only(['nama_matkul', 'kode_kelompok', 'kuota', 'jumlah_mahasiswa']);
-        $schedule = Schedule::find($id);
-        // Update 'kode_matkul', and 'sks' berdasarkan matkul yanga da ditabel schedule sendiri
-        $kode_matkul = Schedule::where('nama_matkul', $request->nama_matkul)->value('kode_matkul');
-        $sks = Schedule::where('nama_matkul', $request->nama_matkul)->value('sks');
-        $scheduleData['kode_matkul'] = $kode_matkul;
-        $scheduleData['sks'] = $sks;
-        // Update Schedule
-        $schedule->update($scheduleData);
-
         // Update Schedule Sessions  - MASIH PROBLEM UNTUK SCHEDULE SESSION bedain jadwal 1/2/3 dalam schedule id yang sama
-        $scheduleSessionsData = $request->only(['day', 'time_start', 'time_end']);
-        $scheduleSessions = ScheduleSession::find($id);
-        $classroom_id = Classroom::where('name', $request->name)->value('id');
-        $scheduleSessionsData['schedule_id'] = $id;
-        $scheduleSessionsData['classroom_id'] = $classroom_id;
-        // dd($scheduleSessionsData);
-        // Update ScheduleSessions
-        $scheduleSessions->update($scheduleSessionsData);
+        $jadwals = [];
+        for ($i = 1; $i <= 3; $i++) {
+            $jadwals[] = [
+                'day' => $request->{"day$i" ?? ""},
+                'name' => $request->{"name$i" ?? ""},
+                'time_start' => $request->{"time_start$i" ?? ""},
+                'time_end' => $request->{"time_end$i" ?? ""},
+                'id_session' => $request->{"session_id$i"}
+            ];
+        }
 
+        foreach ($jadwals as $jadwal) {
+            // Dapatkan ID kelas sesuai dengan nama ruang
+            $classroom_id = Classroom::where('name', $jadwal['name'])->value('id');
+        
+            // Pastikan jadwal sesi yang ingin diperbarui ada
+            if ($scheduleSessions = ScheduleSession::find($jadwal['id_session'])) {
+                $scheduleSessionsData = [
+                    'day' => $jadwal['day'],
+                    'time_start' => $jadwal['time_start'],
+                    'time_end' => $jadwal['time_end'],
+                    'schedule_id' => $id, // Pastikan variabel $id telah didefinisikan sebelumnya
+                    'classroom_id' => $classroom_id,
+                ];
+        
+                // Perbarui jadwal sesi
+                $scheduleSessions->update($scheduleSessionsData);
+            } 
+        }
+
+        
         return redirect()->route('schedule.index')->with('success', 'Schedule Berhasil Diupdate');
     }
 
