@@ -103,7 +103,7 @@ class ScheduleController extends Controller
             }
         }
 
-        // Update Schedule Sessions  - MASIH PROBLEM UNTUK SCHEDULE SESSION bedain jadwal 1/2/3 dalam schedule id yang sama
+        // Update Schedule Sessions
         $jadwals = [];
         for ($i = 1; $i <= 3; $i++) {
             $jadwals[] = [
@@ -118,23 +118,23 @@ class ScheduleController extends Controller
         foreach ($jadwals as $jadwal) {
             // Dapatkan ID kelas sesuai dengan nama ruang
             $classroom_id = Classroom::where('name', $jadwal['name'])->value('id');
-        
-            // Pastikan jadwal sesi yang ingin diperbarui ada
+
+            // Memastikan jadwal sesi yang ingin diperbarui ada
             if ($scheduleSessions = ScheduleSession::find($jadwal['id_session'])) {
                 $scheduleSessionsData = [
                     'day' => $jadwal['day'],
                     'time_start' => $jadwal['time_start'],
                     'time_end' => $jadwal['time_end'],
-                    'schedule_id' => $id, // Pastikan variabel $id telah didefinisikan sebelumnya
+                    'schedule_id' => $id,
                     'classroom_id' => $classroom_id,
                 ];
-        
+
                 // Perbarui jadwal sesi
                 $scheduleSessions->update($scheduleSessionsData);
-            } 
+            }
         }
 
-        
+
         return redirect()->route('schedule.index')->with('success', 'Schedule Berhasil Diupdate');
     }
 
