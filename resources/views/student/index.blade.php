@@ -8,8 +8,8 @@
     <title>Mahasiswa</title>
 </head>
 <body>
-    @include('components.sidebar')
-    @include('components.navbar')
+    @include('components.partials.sidebar')
+    {{-- @include('components.navbar') --}}
     @include('components.buttomNav')
 
 

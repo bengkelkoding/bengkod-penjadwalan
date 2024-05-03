@@ -11,7 +11,8 @@ class ScheduleSession extends Model
 
     protected $guarded = [];
 
-    public function classrooms() {
-        return $this->belongsTo(\App\Models\Classroom::class);
+    public function classrooms()
+    {
+        return $this->belongsTo(classroom::class, 'classroom_id', 'id');
     }
 }
