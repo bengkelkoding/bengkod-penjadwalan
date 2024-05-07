@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="{{ url('/resources/css/style.css') }}">
-
+        <script src="{{ url('/resources/js/app.js') }}" ></script>
         <x-partials.head></x-partials.head>
     </head>
     <body>
@@ -120,14 +120,13 @@
             <main class="container-fluid bg-blue-300s">
                 <div class="container mt-16 z-100">
                     {{ $slot }}
+                    {{-- <x-partials.footer></x-partials.footer> --}}
                 </div>
-                <x-partials.footer></x-partials.footer>
             </main>
         </div>
   
         
-        
- 
+       
     </body>
     @stack('script')
 </html>
