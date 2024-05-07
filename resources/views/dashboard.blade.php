@@ -259,5 +259,5 @@
     </script>
     @push('scripts')
     @endpush
-@endpush
+
 </x-universal-layout>

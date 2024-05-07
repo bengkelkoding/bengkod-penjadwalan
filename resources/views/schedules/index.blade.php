@@ -1,18 +1,6 @@
 <x-universal-layout>
-<<<<<<< HEAD
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Penjadwalan') }}
-        </h2>
-    </x-slot>
-
-    
-
-    <div class="py-12">
-=======
 
     <div class="">
->>>>>>> 75ed609878c6e2e099c886dcbdbb8b02a97bf23e
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -407,76 +395,6 @@
 
 
 @foreach ($schedules as $schedule)
-<<<<<<< HEAD
-<!-- Edit Schedule -->
-<div id="updateSchedule{{ $schedule->id }}" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 left-0 right-0 z-50 items-center justify-center  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <form class="relative bg-white rounded-lg shadow dark:bg-gray-700" action="/updateSchedule/{{ $schedule->id }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <!-- Modal header -->
-            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Edit Schedule
-                </h3>
-            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateSchedule{{ $schedule->id }}">
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-6 space-y-6">
-                <div class="grid grid-cols-4 md:grid-cols-4 gap-3">
-                    <div class="col-span-8 md:col-span-2">
-                        <label for="nip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIP Dosen</label>
-                        <input value="{{ $schedule->dosen->nip ?? '' }}" type="text" name="nip" id="nip" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $schedule->dosen->nip ?? 'kosong' }}" >
-                    </div>
-                    <div class="col-span-4 md:col-span-2">
-                        <label for="nama_matkul" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mata Kuliah</label>
-                        <select name="nama_matkul" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">Pilih Mata Kuliah</option>
-                            <option value="{{ $schedule->nama_matkul }}" selected>{{ $schedule->nama_matkul }}</option>
-                            @foreach ($scheduleMatkul as $matkul)
-                                <option value="{{ $matkul }}">{{ $matkul }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-span-4 md:col-span-2">
-                        <label for="kode_kelompok" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Kelompok</label>
-                        <input value="{{ $schedule->kode_kelompok }}" type="text" name="kode_kelompok" id="kode_kelompok" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required="">
-                    </div>
-                    <div class="col-span-4 sm:col-span-1">
-                        <label for="kuota" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kuota</label>
-                        <input value="{{ $schedule->kuota }}" type="number" name="kuota" id="kuota" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required="">
-                    </div>
-                    <div class="col-span-3 sm:col-span-1">
-                        <label for="jumlah_mahasiswa" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Mahasiswa</label>
-                        <input value="{{ $schedule->jumlah_mahasiswa }}" type="number" name="jumlah_mahasiswa" id="jumlah_mahasiswa" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required="">
-                    </div>
-
-                    @foreach ($schedule->scheduleSessions as $session)
-                    @if ($session->schedule_id == $schedule->id)
-                    <div class="col-span-4 grid grid-cols-4 md:grid-cols-4 gap-3">
-                        <span class="col-span-4 inline-flex justify-center items-center px-2 text-sm font-medium text-black border-b rounded">
-                            Jadwal {{ $loop->index + 1 }}
-                        </span>
-                        <input type="hidden" id="session_id{{ $loop->index + 1 }}" name="session_id{{ $loop->index + 1 }}" value="{{ $session->id }}">
-                        <div class="col-span-5 sm:col-span-1">
-                            <label for="day{{ $loop->index + 1 }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hari</label>
-                            <select id="day{{ $loop->index + 1 }}" name="day{{ $loop->index + 1 }}" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="{{ $session->day }}" selected>{{ $session->day }}</option>
-                                <option value="SENIN">Senin</option>
-                                <option value="SELASA">Selasa</option>
-                                <option value="RABU">Rabu</option>
-                                <option value="KAMIS">Kamis</option>
-                                <option value="JUMAT">Jumat</option>
-                                <option value="SABTU">Sabtu</option>
-                                <option value="MINGGU">Minggu</option>
-                                <option value="">-</option>
-                            </select>
-=======
     <!-- Edit Schedule -->
     <div id="updateSchedule{{ $schedule->id }}" tabindex="-1" aria-hidden="true"
         class="hidden fixed top-0 left-0 right-0 z-50 items-center justify-center  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -511,7 +429,6 @@
                                 id="nip"
                                 class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="{{ $schedule->dosen->nip ?? 'kosong' }}">
->>>>>>> 75ed609878c6e2e099c886dcbdbb8b02a97bf23e
                         </div>
                         <div class="col-span-4 md:col-span-2">
                             <label for="nama_matkul"
