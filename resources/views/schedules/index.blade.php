@@ -1,9 +1,11 @@
-<x-app-layout>
+<x-universal-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Penjadwalan') }}
         </h2>
     </x-slot>
+
+    
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -11,7 +13,6 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('schedule.import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-
                         <input type="file" name="schedule">
                         <x-primary-button type="submit">Import</x-primary-button>
                     </form>
@@ -367,7 +368,6 @@
                         <label for="jumlah_mahasiswa" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah Mahasiswa</label>
                         <input value="{{ $schedule->jumlah_mahasiswa }}" type="number" name="jumlah_mahasiswa" id="jumlah_mahasiswa" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required="">
                     </div>
-
 
                     @foreach ($schedule->scheduleSessions as $session)
                     @if ($session->schedule_id == $schedule->id)
