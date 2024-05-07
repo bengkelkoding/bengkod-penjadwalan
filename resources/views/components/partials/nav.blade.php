@@ -3,8 +3,10 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start rtl:justify-end">
           <a href="https://flowbite.com" class="flex ms-2 md:me-24">
+            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Rubah lah</span>
+
             {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" /> --}}
-            @if ($role === 'Admin')
+            {{-- @if ($role === 'Admin')
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Admin Panel</span>
             @elseif ($role === 'Lecture')
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Dosen Panel</span>
@@ -12,7 +14,8 @@
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Mahasiswa Panel</span>
             @else
                 <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
-            @endif
+            @endif --}}
+            
         </a>
         
         </div>
