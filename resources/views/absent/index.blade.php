@@ -14,7 +14,7 @@
                         <div class="look flex gap-3 items-center">
                             <p class="text-base">Mahasiswa</p>
                             <button type="button"
-                                class=" mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-0.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Lihat
+                                class=" mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-0.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Detail</button>
                         </div>
                         <p class="text-sm text-slate-600">Verifikasi automatis <span class="text-red-500">ditolak</span>
@@ -42,27 +42,45 @@
                 </div>
             </div>
 
+            {{-- Info details --}}
             <div class="Info w-full flex flex-col justify-center">
-                <h1 class="text-3xl">Details</h1>
-                <div class="box-info w-full flex items-center justify-center flex-col md:flex-row">
+                {{-- <h1 class="text-3xl">Details</h1> --}}
+                <div class="box-info gap-2 w-full flex items-center justify-center flex-col md:flex-row">
                     {{-- jumlah laporan tidak diterima --}}
-                    <div class="box2 rounded-lg p-3 w-full lg:w-1/2 h-[20vh] shadow-lg">
-                        <div class="icon w-12">
-                            <dotlottie-player
+                    <div
+                        class="box2 rounded-lg flex items-center p-3 cursor-pointer hover:bg-slate-100 w-full lg:w-1/2 h-[20vh] shadow-lg">
+                        <div class="icon flex w-full">
+                            <dotlottie-player class="w-12"
                                 src="https://lottie.host/574aee2c-7a02-420e-94f6-1decd4d1dfdb/fxttvViiuV.json"
                                 background="transparent" speed="0.5" loop autoplay></dotlottie-player>
+                            <div class="detail-person w-full">
+                                <h1 class="text-xl font-bold">Verifikasi Ditolak</h1>
+                                <h1 class="text-3xl font-thin">10 <span class="text-base">Mahasiswa</span>
+                                </h1>
 
+                                <button type="button"
+                                    class="text-blue-700 w-1/2 mt-2 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Detail</button>
+
+                            </div>
                         </div>
                     </div>
                     {{-- jumlah laporan diterima --}}
-                    <div class="box3 rounded-lg p-3 w-full lg:w-1/2 h-[20vh] shadow-lg">
-                        <div class="icon w-12">
-                            <dotlottie-player
+                    <div
+                        class="box3 rounded-lg flex items-center p-3 cursor-pointer hover:bg-slate-100 w-full lg:w-1/2 h-[20vh] shadow-lg">
+                        <div class="icon flex w-full">
+                            <dotlottie-player class="w-12"
                                 src="https://lottie.host/66f50242-6198-48fd-b325-1cc269a4f615/4JGZFiAUoV.json"
                                 background="transparent" speed="0.5" loop autoplay></dotlottie-player>
-
+                            <div class="detail-person w-full">
+                                <h1 class="text-xl font-bold">Verifikasi Diterima</h1>
+                                <h1 class="text-3xl font-thin">900 <span class="text-base">Mahasiswa</span>
+                                </h1>
+                                <button type="button"
+                                    class="text-blue-700 w-1/2 mt-2 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Detail</button>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -147,18 +165,18 @@
                         </div>
                     </div>
                     <div>
-                        <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
+                        <button id="dropdownDetailButton" data-dropdown-toggle="lastDaysdropdown"
                             data-dropdown-placement="bottom" type="button"
                             class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Last
-                            week <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
+                            week <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="m1 1 4 4 4-4" />
                             </svg></button>
                         <div id="lastDaysdropdown"
                             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownDefaultButton">
+                                aria-labelledby="dropdownDetailButton">
                                 <li>
                                     <a href="#"
                                         class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
