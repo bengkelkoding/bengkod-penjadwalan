@@ -10,4 +10,8 @@ class Classroom extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function scheduleSessions() {
+        return $this->hasMany(\App\Models\ScheduleSession::class);
+    }
 }

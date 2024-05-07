@@ -1,28 +1,85 @@
 <x-universal-layout>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <section class="container w-full bg-slate-50 h-[85vh] p-5 gap-5 flex flex-col rounded-lg">
-        <section class="top-box w-full flex flex-col md:flex-row gap-4">
+        <section class="top-box w-full flex flex-col lg:flex-row gap-4">
             {{-- jumlah laporan izin --}}
-            <div class="box1 rounded-lg p-3  md:w-1/2 h-[20vh] bg--300 shadow-lg ">
-                <div class="icon w-12">
-                    <dotlottie-player src="https://lottie.host/6761cf88-fa33-4927-9fce-10d8f14f5ef0/RIbMwGQsgs.json"
+            <div class="box1 rounded-lg p-3 lg:w-1/2 h-auto shadow-lg cursor-pointer hover:bg-slate-100">
+                <div class="icon flex gap-2">
+                    <dotlottie-player class="w-20"
+                        src="https://lottie.host/6761cf88-fa33-4927-9fce-10d8f14f5ef0/RIbMwGQsgs.json"
                         background="transparent" speed="0.5" loop autoplay></dotlottie-player>
+                    <div class="detail-person">
+                        <h1 class="text-3xl font-bold">Verifikasi Absen</h1>
+                        <h1 class="text-7xl font-thin">80</h1>
+                        <div class="look flex gap-3 items-center">
+                            <p class="text-base">Mahasiswa</p>
+                            <button type="button"
+                                class=" mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-0.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Detail</button>
+                        </div>
+                        <p class="text-sm text-slate-600">Verifikasi automatis <span class="text-red-500">ditolak</span>
+                            jika sudah
+                            melewati 3 hari tanpa verifikasi.</p>
+                    </div>
+                    {{-- tool tips --}}
+                    {{-- <div class="tootips-details">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24" data-tooltip-target="tooltip-click" data-tooltip-trigger="click"
+                            data-tooltip-placement="right">
+                            <path fill-rule="evenodd"
+                                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.008-3.018a1.502 1.502 0 0 1 2.522 1.159v.024a1.44 1.44 0 0 1-1.493 1.418 1 1 0 0 0-1.037.999V14a1 1 0 1 0 2 0v-.539a3.44 3.44 0 0 0 2.529-3.256 3.502 3.502 0 0 0-7-.255 1 1 0 0 0 2 .076c.014-.398.187-.774.48-1.044Zm.982 7.026a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2h-.01Z"
+                                clip-rule="evenodd" />
+                        </svg>
+
+                        <div id="tooltip-click" role="tooltip"
+                            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            Tooltip on top
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                    </div> --}}
 
                 </div>
             </div>
-            {{-- jumlah laporan tidak diterima --}}
-            <div class="box2 rounded-lg p-3  md:w-1/2 h-[20vh] shadow-lg">
-                <div class="icon w-12">
-                    <dotlottie-player src="https://lottie.host/574aee2c-7a02-420e-94f6-1decd4d1dfdb/fxttvViiuV.json"
-                        background="transparent" speed="0.5" loop autoplay></dotlottie-player>
 
-                </div>
-            </div>
-            {{-- jumlah laporan diterima --}}
-            <div class="box3 rounded-lg p-3  md:w-1/2 h-[20vh] shadow-lg">
-                <div class="icon w-12">
-                    <dotlottie-player src="https://lottie.host/66f50242-6198-48fd-b325-1cc269a4f615/4JGZFiAUoV.json"
-                        background="transparent" speed="0.5" loop autoplay></dotlottie-player>
+            {{-- Info details --}}
+            <div class="Info w-full flex flex-col justify-center">
+                {{-- <h1 class="text-3xl">Details</h1> --}}
+                <div class="box-info gap-2 w-full flex items-center justify-center flex-col md:flex-row">
+                    {{-- jumlah laporan tidak diterima --}}
+                    <div
+                        class="box2 rounded-lg flex items-center p-3 cursor-pointer hover:bg-slate-100 w-full lg:w-1/2 h-[20vh] shadow-lg">
+                        <div class="icon flex w-full">
+                            <dotlottie-player class="w-12"
+                                src="https://lottie.host/574aee2c-7a02-420e-94f6-1decd4d1dfdb/fxttvViiuV.json"
+                                background="transparent" speed="0.5" loop autoplay></dotlottie-player>
+                            <div class="detail-person w-full">
+                                <h1 class="text-xl font-bold">Verifikasi Ditolak</h1>
+                                <h1 class="text-3xl font-thin">10 <span class="text-base">Mahasiswa</span>
+                                </h1>
+
+                                <button type="button"
+                                    class="text-blue-700 w-1/2 mt-2 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Detail</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    {{-- jumlah laporan diterima --}}
+                    <div
+                        class="box3 rounded-lg flex items-center p-3 cursor-pointer hover:bg-slate-100 w-full lg:w-1/2 h-[20vh] shadow-lg">
+                        <div class="icon flex w-full">
+                            <dotlottie-player class="w-12"
+                                src="https://lottie.host/66f50242-6198-48fd-b325-1cc269a4f615/4JGZFiAUoV.json"
+                                background="transparent" speed="0.5" loop autoplay></dotlottie-player>
+                            <div class="detail-person w-full">
+                                <h1 class="text-xl font-bold">Verifikasi Diterima</h1>
+                                <h1 class="text-3xl font-thin">900 <span class="text-base">Mahasiswa</span>
+                                </h1>
+                                <button type="button"
+                                    class="text-blue-700 w-1/2 mt-2 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Detail</button>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -108,18 +165,18 @@
                         </div>
                     </div>
                     <div>
-                        <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
+                        <button id="dropdownDetailButton" data-dropdown-toggle="lastDaysdropdown"
                             data-dropdown-placement="bottom" type="button"
                             class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Last
-                            week <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
+                            week <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="m1 1 4 4 4-4" />
                             </svg></button>
                         <div id="lastDaysdropdown"
                             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownDefaultButton">
+                                aria-labelledby="dropdownDetailButton">
                                 <li>
                                     <a href="#"
                                         class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>

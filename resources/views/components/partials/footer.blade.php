@@ -1,1 +1,1 @@
-copyright
+<p class="text-center text-gray-700">Copyright 2024 &copy; Bengkel Koding</p>

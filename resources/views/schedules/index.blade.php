@@ -1,4 +1,5 @@
 <x-universal-layout>
+<<<<<<< HEAD
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Penjadwalan') }}
@@ -6,15 +7,30 @@
     </x-slot>
 
     <div class="py-12">
+=======
+
+    @section('title', 'Penjadwalan')
+
+    <div class="">
+>>>>>>> 7a2659c03e16b49a74da52793b5a8aa27e650739
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('schedule.import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="file" name="schedule">
+                        <input type="file" name="schedule_file">
                         <x-primary-button type="submit">Import</x-primary-button>
                     </form>
                 </div>
+                @error('schedule_file')
+                    <div class="ms-3 text-sm font-normal">{{ $message }}</div>
+                @enderror
+                {{-- <button type="button" class="-mx-1.5 -my-1.5 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white" data-dismiss-target="#toast-success" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button> --}}
             </div>
         </div>
     </div>
@@ -308,6 +324,7 @@
                             <span class="sr-only">Tambah Jadwal</span>
                             </button>
                         </span> --}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -323,8 +340,14 @@
 
 
 @foreach ($schedules as $schedule)
+<<<<<<< HEAD
 <<<<<<< HEAD <!-- Edit Schedule -->
     <div id="updateSchedule{{ $schedule->id }}" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 left-0 right-0 z-50 items-center justify-center  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+=======
+    <!-- Edit Schedule -->
+    <div id="updateSchedule{{ $schedule->id }}" tabindex="-1" aria-hidden="true"
+        class="hidden fixed top-0 left-0 right-0 z-50 items-center justify-center  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+>>>>>>> 7a2659c03e16b49a74da52793b5a8aa27e650739
         <div class="relative w-full max-w-2xl max-h-full">
             <!-- Modal content -->
             <form class="relative bg-white rounded-lg shadow dark:bg-gray-700" action="/updateSchedule/{{ $schedule->id }}" method="POST" enctype="multipart/form-data">
@@ -345,8 +368,17 @@
                 <div class="p-6 space-y-6">
                     <div class="grid grid-cols-4 md:grid-cols-4 gap-3">
                         <div class="col-span-8 md:col-span-2">
+<<<<<<< HEAD
                             <label for="nip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIP Dosen</label>
                             <input value="{{ $schedule->dosen->nip ?? '' }}" type="text" name="nip" id="nip" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="{{ $schedule->dosen->nip ?? 'kosong' }}">
+=======
+                            <label for="nip"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIP Dosen</label>
+                            <input value="{{ $schedule->dosen->nip ?? '' }}" type="text" name="nip"
+                                id="nip"
+                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="{{ $schedule->dosen->nip ?? 'kosong' }}">
+>>>>>>> 7a2659c03e16b49a74da52793b5a8aa27e650739
                         </div>
                         <div class="col-span-4 md:col-span-2">
                             <label for="nama_matkul" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mata Kuliah</label>
