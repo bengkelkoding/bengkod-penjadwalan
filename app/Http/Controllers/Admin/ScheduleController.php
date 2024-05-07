@@ -133,8 +133,6 @@ class ScheduleController extends Controller
                 $scheduleSessions->update($scheduleSessionsData);
             }
         }
-
-
         return redirect()->route('schedule.index')->with('success', 'Schedule Berhasil Diupdate');
     }
 
