@@ -32,7 +32,7 @@
                 <div class="flex items-center">
                     <div class="flex flex-col-reverse gap-4 items-center ms-3">
                         <!-- Settings Dropdown -->
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
+                        <div class="hidden sm:ml-6 sm:flex sm:items-center">
                             @auth
                                 <x-dropdown align="right" width="48">
                                     <x-slot name="trigger">
