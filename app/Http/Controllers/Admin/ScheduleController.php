@@ -28,7 +28,10 @@ class ScheduleController extends Controller
 
     public function import(Request $request)
     {
-        Excel::import(new ScheduleImport, $request->schedule);
+        $request->validate([
+            'schedule_file' => 'required|max:50000|mimes:xlsx,xls'
+        ]);
+        Excel::import(new ScheduleImport, $request->schedule_file);
 
         return redirect()->back();
     }
