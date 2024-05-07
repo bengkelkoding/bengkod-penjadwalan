@@ -1,40 +1,43 @@
 <?php
 
-use App\Http\Controllers\Admin\AbsentController;
-use App\Http\Controllers\Admin\ClassroomController;
-use App\Http\Controllers\Admin\ScheduleController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\AbsentController;
+use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ClassroomController;
+use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
-    return view('index');
+    return redirect()->route('auth.index');
 });
 
-Route::get('/login', function () {
-    return view('home');
+Route::middleware('guest:web')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'index'])->name('auth.index');
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('auth.login');
+    
 });
 
-Route::get('/admin', function () {
-    return view('admin.index');
-});
+Route::middleware('auth:web')->group(function () {
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('auth.logout');
 
-Route::get('/mahasiswa', function () {
-    return view('student.index');
-});
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::group(['prefix' => 'classrooms', 'name' => 'classroom.', 'controller' => ClassroomController::class], function() {
+        Route::get('/', 'index')->name('classroom.index');
+        Route::post('/store', 'store')->name('classroom.store');
+        Route::put('/{id}/update', 'update')->name('classroom.update');
+        Route::delete('/{id}/destroy', 'destroy')->name('classroom.destroy');
+    });
 
-    Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classroom.index');
+    Route::get('/absent', [AbsentController::class, 'index'])->name('absent.index');
 
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule.index');
-    Route::get('/absent', [AbsentController::class, 'index'])->name('absent.index');
     Route::post('/schedules/import', [ScheduleController::class, 'import'])->name('schedule.import');
     Route::post('/insertSchedule', [ScheduleController::class, 'insertSchedule'])->name('insertSchedule');
     Route::post('/updateSchedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('updateSchedule');
     Route::get('/deleteSchedule/{id}', [ScheduleController::class, 'deleteSchedule'])->name('deleteSchedule');
-});
 
-require __DIR__.'/auth.php';
+    Route::get('/mahasiswa', function () {
+        return view('student.index');
+    });
+});
