@@ -10,78 +10,58 @@
     // jadi ini berfungsi melihat jumlah kelas yang sudah sesuai dengan total jumlah masuk diharapkan admin mengetahui kelas mana yang belum melengkapi kehadiran
 
 @endphp
-<script>
-    window.onload = function() {
-
-        var totalVisitors = <?php echo $totalVisitors; ?>;
-        var visitorsData = {
-            "Pertemuan": [{
-                cursor: "pointer",
-                explodeOnClick: false,
-                innerRadius: "55%", //tebal
-                legendMarkerType: "square",
-                name: "Pertemuan",
-                radius: "100%",
-                showInLegend: true,
-                startAngle: 90, // Mengubah sudut awal
-
-                type: "doughnut",
-                dataPoints: <?php echo json_encode($newVsReturningVisitorsDataPoints, JSON_NUMERIC_CHECK); ?>
-            }]
-        };
-
-        var newVSReturningVisitorsOptions = {
-            animationEnabled: true,
-            theme: "light2",
-            title: {
-                text: "Pertemuan" // ini untuk judul
-            },
-            subtitles: [{
-                backgroundColor: "#2eacd1",
-                fontSize: 16,
-                fontColor: "white",
-                padding: 5
-            }],
-            legend: {
-                fontFamily: "calibri",
-                fontSize: 14,
-                itemTextFormatter: function(e) {
-                    return e.dataPoint.name + ": " + Math.round(e.dataPoint.y / totalVisitors * 100) + "%";
-                }
-            },
-            data: []
-        };
-
-
-
-        var chart = new CanvasJS.Chart("chartContainer", newVSReturningVisitorsOptions);
-        chart.options.data = visitorsData["Pertemuan"];
-        chart.render();
-
-
-
-
-
-    }
-</script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <x-universal-layout :role="$role">
     <section class="box p-3 rounded-lg h-auto  grid lg:grid-cols-3 grid-cols-1 gap-3 ">
         <div
             class="box1 w-auto h-[70vh] md:col-span-1 md:row-span-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             {{-- box grafik --}}
-            <div class="p-6 grafik relative">
-                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-                <div class="absolute inset-0 flex justify-center items-center pointer-events-none">
-                    <div class="text-center">
-                        <h1 class="text-5xl font-bold text-gray-900 dark:text-white">12</h1>
-                        <p class="mt-2 font-normal text-gray-500 dark:text-gray-400">Pertemuan</p>
+            <div class="w-auto h-[70vh] bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+                <div class="flex justify-between mt-3 mb-3">
+                    <div class="flex justify-center items-center">
+                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white pe-1">Attendence Traffic
+                        </h5>
+                        <svg data-popover-target="chart-info" data-popover-placement="bottom"
+                            class="w-3.5 h-3.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1"
+                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm0 16a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm1-5.034V12a1 1 0 0 1-2 0v-1.418a1 1 0 0 1 1.038-.999 1.436 1.436 0 0 0 1.488-1.441 1.501 1.501 0 1 0-3-.116.986.986 0 0 1-1.037.961 1 1 0 0 1-.96-1.037A3.5 3.5 0 1 1 11 11.466Z" />
+                        </svg>
+                        <div data-popover id="chart-info" role="tooltip"
+                            class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
+                            <div class="p-3 space-y-2">
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Kelas Sesuai</h3>
+                                <p>Kelas yang sesuai dengan jumlah dan waktu pertemuan yang seharusnya</p>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Kelas tidak Sesuai</h3>
+                                <p>Kelas yang tidak sesuai dengan jumlah dan waktu pertemuan yang seharusnya, misalnya
+                                    minggu ke-5 perkuliahan semua kelas seharusnya sudah masuk ke pertemuan 5, tapi
+                                    karena ada kelas yang kosong, jadi kelas tersebut masih masuk ke pertemuan 4</p>
+                            </div>
+                            <div data-popper-arrow></div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" data-tooltip-target="data-tooltip" data-tooltip-placement="bottom"
+                            class="hidden sm:inline-flex items-center justify-center text-gray-500 w-8 h-8 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm"><svg
+                                class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 16 18">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3" />
+                            </svg><span class="sr-only">Download data</span>
+                        </button>
+                        <div id="data-tooltip" role="tooltip"
+                            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            Download CSV
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
                     </div>
                 </div>
-                <p class="mt-6 font-normal text-gray-500 dark:text-gray-400">Ganti jadi setengah</p>
+                <!-- Donut Chart -->
+                <div class="py-6" id="donut-chart"></div>
             </div>
-
-
         </div>
 
         <div
@@ -181,17 +161,103 @@
                 </div>
             </div>
         </div>
-
-
-
-
     </section>
+    <script>
+        const getChartOptions = () => {
+            return {
+                series: [3, 9], //ini nanti tolong diganti berdasarkan data
+                colors: ["#1C64F2", "#E74694"],
+                chart: {
+                    height: 320,
+                    width: "100%",
+                    type: "donut",
+                },
+                stroke: {
+                    colors: ["transparent"],
+                    lineCap: "",
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                name: {
+                                    show: true,
+                                    fontFamily: "Inter, sans-serif",
+                                    offsetY: 20,
+                                },
+                                total: {
+                                    showAlways: true,
+                                    show: true,
+                                    label: "Total Pertemuan",
+                                    fontFamily: "Inter, sans-serif",
+                                    formatter: function(w) {
+                                        const sum = w.globals.seriesTotals.reduce((a, b) => {
+                                            return a + b
+                                        }, 0)
+                                        return sum
+                                    },
+                                },
+                                value: {
+                                    show: true,
+                                    fontFamily: "Inter, sans-serif",
+                                    offsetY: -20,
+                                    formatter: function(value) {
+                                        return value
+                                    },
+                                },
+                            },
+                            size: "65%",
+                        },
+                    },
+                },
+                grid: {
+                    padding: {
+                        top: -2,
+                    },
+                },
+                labels: ["Kelas Sesuai", "Kelas tidak sesuai"],
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    position: "bottom",
+                    fontFamily: "Inter, sans-serif",
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function(value) {
+                            return value
+                        },
+                    },
+                },
+                xaxis: {
+                    labels: {
+                        formatter: function(value) {
+                            return value
+                        },
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+                    axisBorder: {
+                        show: false,
+                    },
+                },
+            }
+        }
 
+        if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined') {
+            const chart = new ApexCharts(document.getElementById("donut-chart"), getChartOptions());
+            chart.render();
+
+            // Attach the event listener to each checkbox
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener('change', (event) => handleCheckboxChange(event, chart));
+            });
+        }
+    </script>
     @push('scripts')
     @endpush
+@endpush
 </x-universal-layout>
-<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
-<script>
-    console.log("hallo");
-</script>

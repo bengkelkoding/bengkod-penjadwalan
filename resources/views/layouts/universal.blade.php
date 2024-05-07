@@ -102,7 +102,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('schedule.index') }}" :class="{ 'active': request() - > routeIs('schedule.index') }"
+                    <a href="{{ route('schedule.index') }}"
+                        :class="{ 'active': request() - > routeIs('schedule.index') }"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -129,18 +130,23 @@
                     </a>
                 </li>
 
-
-                <li>
-                    <a href="#"
-                        class="flex items-center p-2 text-red-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
-                        <svg class="flex-shrink-0 w-5 h-5 text-red-500 transition duration-75 dark:text-gray-400 group-hover:text-red-900 dark:group-hover:text-white"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
-                    </a>
-                </li>
+                <form method="POST" action="{{ route('auth.logout') }}">
+                    @csrf
+                    <li href="route('auth.logout')"
+                        onclick="event.preventDefault();
+                this.closest('form').submit();">
+                        <div
+                            class="flex cursor-pointer items-center p-2 text-red-900 rounded-lg dark:text-white hover:bg-red-100 dark:hover:bg-red-700 group">
+                            <svg class="flex-shrink-0 w-5 h-5 text-red-500 transition duration-75 dark:text-gray-400 group-hover:text-red-900 dark:group-hover:text-white"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 18 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
+                        </div>
+                    </li>
             </ul>
         </div>
     </aside>
