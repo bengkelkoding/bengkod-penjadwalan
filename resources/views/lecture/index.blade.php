@@ -16,7 +16,7 @@
         </div>
     </div> --}}
 
-    <div class="relative m-8 overflow-x-scroll p-4 shadow-md sm:rounded-lg md:overflow-x-hidden">
+   
         @if ($errors->any())
             <div id="toast-success" class="mb-4 flex w-full max-w-xs items-center rounded-lg bg-white p-4 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
                 <div class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
@@ -117,7 +117,7 @@
                 </tbody>
             </table>
             {{ $lectures->links() }}
-        </div>
+    
     </x-universal-layout>
 
 
