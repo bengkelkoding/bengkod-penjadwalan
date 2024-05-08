@@ -26,7 +26,7 @@ class ClassroomController extends Controller
 
         Classroom::create([ 'name' => $request->name ]);
 
-        return redirect()->back(); 
+        return redirect()->back()->with('success', 'Berhasil menambah ruang kelas'); 
     }
 
     public function update($id, Request $request) {
@@ -41,7 +41,7 @@ class ClassroomController extends Controller
 
         Classroom::findOrFail($id)->update([ 'name' => $request->name ]);
 
-        return redirect()->back(); 
+        return redirect()->back()->with('success', 'Berhasil mengubah ruang kelas'); 
     }
 
     public function destroy($id) {
@@ -52,6 +52,6 @@ class ClassroomController extends Controller
 
         $class->delete();
 
-        return redirect()->back(); 
+        return redirect()->back()->with('success', 'Berhasil menghapus ruang kelas'); 
     }
 }

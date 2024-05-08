@@ -1,9 +1,23 @@
 <x-universal-layout>
 
-    @section('title', 'Ruang Kelas')
+    @section('title', 'Mahasiswa')
+
+    <div class="">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <form action="{{ route('mahasiswa.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="mahasiswa_file">
+                        <x-primary-button type="submit">Import</x-primary-button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="relative m-8 overflow-x-scroll p-4 shadow-md sm:rounded-lg md:overflow-x-hidden">
-        @error('name')
+        @if ($errors->any())
             <div id="toast-success" class="mb-4 flex w-full max-w-xs items-center rounded-lg bg-white p-4 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
                 <div class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
                     <svg class="h-6 w-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -12,7 +26,9 @@
 
                     <span class="sr-only">Trash icon</span>
                 </div>
-                <div class="ms-3 text-sm font-normal">{{ $message }}</div>
+                @foreach ($errors->all() as $error)
+                    <p class="ms-3 text-sm font-normal">{{ $error }}</p>
+                @endforeach
                 <button type="button" class="-mx-1.5 -my-1.5 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white" data-dismiss-target="#toast-success" aria-label="Close">
                     <span class="sr-only">Close</span>
                     <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -39,10 +55,10 @@
             @endsession
 
             <div class="mb-4 flex gap-2">
-                <button data-modal-show="tambahClassroom" data-modal-target="tambahClassroom" type="button"
+                <button data-modal-show="tambahMahasiswa" data-modal-target="tambahMahasiswa" type="button"
                     class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700">
-                    <span class="sr-only">Tambah Ruang Kelas</span>
-                    Tambah Ruang Kelas
+                    <span class="sr-only">Tambah Mahasiswa</span>
+                    Tambah Mahasiswa
                     <svg class="ms-2.5 hidden h-5 w-5 lg:block" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd" d="M18 5.05h1a2 2 0 0 1 2 2v2H3v-2a2 2 0 0 1 2-2h1v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1Zm-15 6v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8H3ZM11 18a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z" clip-rule="evenodd" />
                     </svg>
@@ -56,10 +72,13 @@
                             No
                         </th>
                         <th scope="col" class="p-4">
+                            NIM
+                        </th>
+                        <th scope="col" class="p-4">
                             Nama
                         </th>
                         <th scope="col" class="p-4">
-                            Jumlah Jadwal
+                            Jadwal Diambil
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Aksi
@@ -70,54 +89,57 @@
                     @php
                         $no = 1;
                     @endphp
-                    @foreach ($classrooms as $index => $classroom)
+                    @foreach ($students as $index => $student)
                         <tr class="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
                             <td class="p-4 px-6">
-                                {{ $index + $classrooms->firstItem() }}
+                                {{ $index + $students->firstItem() }}
                             </td>
                             <td class="p-4 px-6">
-                                {{ $classroom->name }}
+                                {{ $student->nim }}
                             </td>
                             <td class="p-4 px-6">
-                                {{ $classroom->classroom_sessions_count }}
+                                {{ $student->user->fullname }}
+                            </td>
+                            <td class="p-4 px-6">
+                                {{ $student->schedules_count }}
                             </td>
                             <td class="flex gap-2 px-6 py-4">
-                                <button data-modal-target="updateClassroom{{ $classroom->id }}" data-modal-show="updateClassroom{{ $classroom->id }}" type="button" class="bg-merah text-merah border-merah hover:bg-abu-abu inline-flex items-center rounded-lg border p-2.5 text-center text-sm font-medium hover:text-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                <button data-modal-target="updateMahasiswa{{ $student->id }}" data-modal-show="updateMahasiswa{{ $student->id }}" type="button" class="bg-merah text-merah border-merah hover:bg-abu-abu inline-flex items-center rounded-lg border p-2.5 text-center text-sm font-medium hover:text-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                     <svg class="text-putih h-5 w-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd" d="M11.3 6.2H5a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h11c1.1 0 2-1 2-2.1V11l-4 4.2c-.3.3-.7.6-1.2.7l-2.7.6c-1.7.3-3.3-1.3-3-3.1l.6-2.9c.1-.5.4-1 .7-1.3l3-3.1Z" clip-rule="evenodd" />
                                         <path fill-rule="evenodd" d="M19.8 4.3a2.1 2.1 0 0 0-1-1.1 2 2 0 0 0-2.2.4l-.6.6 2.9 3 .5-.6a2.1 2.1 0 0 0 .6-1.5c0-.2 0-.5-.2-.8Zm-2.4 4.4-2.8-3-4.8 5-.1.3-.7 3c0 .3.3.7.6.6l2.7-.6.3-.1 4.7-5Z" clip-rule="evenodd" />
                                     </svg>
-                                    <span class="sr-only">Edit Ruang Kelas</span>
+                                    <span class="sr-only">Edit Mahasiswa</span>
                                 </button>
-                                <button data-modal-target="deleteClassroom{{ $classroom->id }}" data-modal-show="deleteClassroom{{ $classroom->id }}" type="button" class="bg-merah text-merah border-merah hover:bg-abu-abu me-2 inline-flex items-center rounded-lg border p-2.5 text-center text-sm font-medium hover:text-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                <button data-modal-target="deleteMahasiswa{{ $student->id }}" data-modal-show="deleteMahasiswa{{ $student->id }}" type="button" class="bg-merah text-merah border-merah hover:bg-abu-abu me-2 inline-flex items-center rounded-lg border p-2.5 text-center text-sm font-medium hover:text-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                     <svg class="text-putih h-5 w-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd" d="M8.6 2.6A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4c0-.5.2-1 .6-1.4ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd" />
                                     </svg>
-                                    <span class="sr-only">Delete Ruang Kelas</span>
+                                    <span class="sr-only">Delete Mahasiswa</span>
                                 </button>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            {{ $classrooms->links() }}
+            {{ $students->links() }}
         </div>
     </x-universal-layout>
 
 
     {{-- Modal --}}
-    <!-- Tambah Ruang Kelas -->
-    <div id="tambahClassroom" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0">
+    <!-- Tambah Mahasiswa -->
+    <div id="tambahMahasiswa" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0">
         <div class="relative max-h-full w-full max-w-2xl">
             <!-- Modal content -->
-            <form class="relative rounded-lg bg-white shadow dark:bg-gray-700" action="{{ route('classroom.store') }}" method="POST">
+            <form class="relative rounded-lg bg-white shadow dark:bg-gray-700" action="{{ route('mahasiswa.store') }}" method="POST">
                 @csrf
                 <!-- Modal header -->
                 <div class="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Tambah Ruang Kelas
+                        Tambah Mahasiswa
                     </h3>
-                    <button type="button" class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="tambahClassroom">
+                    <button type="button" class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="tambahMahasiswa">
                         <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
@@ -128,8 +150,12 @@
                 <div class="space-y-6 p-6">
                     <div class="grid grid-cols-4 gap-3 md:grid-cols-4">
                         <div class="col-span-8 md:col-span-2">
+                            <label for="nim" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">NIM</label>
+                            <input type="text" name="nim" id="nim" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" required>
+                        </div>
+                        <div class="col-span-8 md:col-span-2">
                             <label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                            <input type="text" name="name" id="name" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" placeholder="" required="">
+                            <input type="text" name="name" id="name" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" required>
                         </div>
                     </div>
                 </div>
@@ -143,20 +169,20 @@
     </div>
 
 
-    @foreach ($classrooms as $classroom)
-        <!-- Edit Ruang Kelas -->
-        <div id="updateClassroom{{ $classroom->id }}" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0">
+    @foreach ($students as $student)
+        <!-- Edit Mahasiswa -->
+        <div id="updateMahasiswa{{ $student->id }}" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0">
             <div class="relative max-h-full w-full max-w-2xl">
                 <!-- Modal content -->
-                <form class="relative rounded-lg bg-white shadow dark:bg-gray-700" action="{{ route('classroom.update', $classroom->id) }}" method="POST" enctype="multipart/form-data">
+                <form class="relative rounded-lg bg-white shadow dark:bg-gray-700" action="{{ route('mahasiswa.update', $student->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <!-- Modal header -->
                     <div class="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Edit Ruang Kelas
+                            Edit Mahasiswa
                         </h3>
-                        <button type="button" class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateClassroom{{ $classroom->id }}">
+                        <button type="button" class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateMahasiswa{{ $student->id }}">
                             <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
@@ -167,9 +193,12 @@
                     <div class="space-y-6 p-6">
                         <div class="grid grid-cols-4 gap-3 md:grid-cols-4">
                             <div class="col-span-8 md:col-span-2">
+                                <label for="nim" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">NIM</label>
+                                <input type="text" name="nim" id="nim" value="{{ $student->nim }}" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" required>
+                            </div>
+                            <div class="col-span-8 md:col-span-2">
                                 <label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                <input value="{{ $classroom->name }}" type="text" name="name" id="name" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="" required="">
+                                <input type="text" name="name" id="name" value="{{ $student->user->fullname }}" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500" required>
                             </div>
                         </div>
                     </div>
@@ -183,11 +212,11 @@
     @endforeach
 
 
-    @foreach ($classrooms as $classroom)
-        <div id="deleteClassroom{{ $classroom->id }}" tabindex="-1" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
+    @foreach ($students as $student)
+        <div id="deleteMahasiswa{{ $student->id }}" tabindex="-1" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0">
             <div class="relative max-h-full w-full max-w-md p-4">
                 <div class="relative rounded-lg bg-white shadow">
-                    <button type="button" class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="deleteRuang Kelas{{ $classroom->id }}">
+                    <button type="button" class="absolute end-2.5 top-3 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="deleteMahasiswa{{ $student->id }}">
                         <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="merah" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
@@ -197,17 +226,17 @@
                         <svg class="text-merah mx-auto mb-4 h-12 w-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
-                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Kamu yakin untuk menghapus ruang kelas <span class="text-merah"> {{ $classroom->name }}</span>?</h3>
-                        <a href="" data-modal-hide="deleteClassroom{{ $classroom->id }}" type="button" onclick="event.preventDefault();
-                        document.getElementById('delete-form-{{ $classroom->id }}').submit();"
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Kamu yakin untuk menghapus mahasiswa <span class="text-merah"> {{ $student->name }}</span>?</h3>
+                        <a href="" data-modal-hide="deleteMahasiswa{{ $student->id }}" type="button" onclick="event.preventDefault();
+                        document.getElementById('delete-form-{{ $student->id }}').submit();"
                             class="me-2 inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">
                             Ya
                         </a>
-                        <form method="POST" action="{{ route('classroom.destroy', $classroom->id) }}" id="delete-form-{{ $classroom->id }}" style="display: none;">
+                        <form method="POST" action="{{ route('mahasiswa.destroy', $student->id) }}" id="delete-form-{{ $student->id }}" style="display: none;">
                             @csrf
                             @method('DELETE')
                         </form>
-                        <button data-modal-hide="deleteClassroom{{ $classroom->id }}" type="button"
+                        <button data-modal-hide="deleteMahasiswa{{ $student->id }}" type="button"
                             class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600">Cancel</button>
                     </div>
                 </div>
