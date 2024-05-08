@@ -7,11 +7,17 @@ use Illuminate\Http\Request;
 
 class AbsentController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('absent.index');
     }
+    public function absentRequest()
+    {
+        return view('absent.absentRequest');
+    }
 
-    public function import(Request $request) {
+    public function import(Request $request)
+    {
 
         return redirect()->back();
     }

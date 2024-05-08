@@ -3,7 +3,7 @@
     <section class="container w-full bg-slate-50 h-[85vh] p-5 gap-5 flex flex-col rounded-lg">
         <section class="top-box w-full flex flex-col lg:flex-row gap-4">
             {{-- jumlah laporan izin --}}
-            <div class="box1 rounded-lg p-3 lg:w-1/2 h-auto shadow-lg cursor-pointer hover:bg-slate-100">
+            <a href="/absent/absentRequest" class="box1 rounded-lg p-3 lg:w-1/2 h-auto shadow-lg cursor-pointer hover:bg-slate-100">
                 <div class="icon flex gap-2">
                     <dotlottie-player class="w-20"
                         src="https://lottie.host/6761cf88-fa33-4927-9fce-10d8f14f5ef0/RIbMwGQsgs.json"
@@ -40,7 +40,7 @@
                     </div> --}}
 
                 </div>
-            </div>
+            </a>
 
             {{-- Info details --}}
             <div class="Info w-full flex flex-col justify-center">

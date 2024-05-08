@@ -14,7 +14,6 @@ Route::get('/', function () {
 Route::middleware('guest:web')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'index'])->name('auth.index');
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('auth.login');
-    
 });
 
 Route::middleware('auth:web')->group(function () {
@@ -22,7 +21,7 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::group(['prefix' => 'classrooms', 'name' => 'classroom.', 'controller' => ClassroomController::class], function() {
+    Route::group(['prefix' => 'classrooms', 'name' => 'classroom.', 'controller' => ClassroomController::class], function () {
         Route::get('/', 'index')->name('classroom.index');
         Route::post('/store', 'store')->name('classroom.store');
         Route::put('/{id}/update', 'update')->name('classroom.update');
@@ -30,6 +29,7 @@ Route::middleware('auth:web')->group(function () {
     });
 
     Route::get('/absent', [AbsentController::class, 'index'])->name('absent.index');
+    Route::get('/absent/absentRequest', [AbsentController::class, 'absentRequest'])->name('absentRequest');
 
     Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule.index');
     Route::post('/schedules/import', [ScheduleController::class, 'import'])->name('schedule.import');
