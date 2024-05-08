@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DosenController;
 use App\Http\Controllers\Admin\AbsentController;
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\MahasiswaController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ClassroomController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
@@ -22,11 +24,26 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::group(['prefix' => 'classrooms', 'name' => 'classroom.', 'controller' => ClassroomController::class], function() {
-        Route::get('/', 'index')->name('classroom.index');
-        Route::post('/store', 'store')->name('classroom.store');
-        Route::put('/{id}/update', 'update')->name('classroom.update');
-        Route::delete('/{id}/destroy', 'destroy')->name('classroom.destroy');
+    Route::group(['prefix' => 'classrooms', 'as' => 'classroom.', 'controller' => ClassroomController::class], function() {
+        Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/{id}/update', 'update')->name('update');
+        Route::delete('/{id}/destroy', 'destroy')->name('destroy');
+    });
+
+    Route::group(['prefix' => 'dosen', 'as' => 'dosen.', 'controller' => DosenController::class], function() {
+        Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/{id}/update', 'update')->name('update');
+        Route::delete('/{id}/destroy', 'destroy')->name('destroy');
+    });
+
+    Route::group(['prefix' => 'mahasiswa', 'as' => 'mahasiswa.', 'controller' => MahasiswaController::class], function() {
+        Route::get('/', 'index')->name('index');
+        Route::post('/import', 'import')->name('import');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/{id}/update', 'update')->name('update');
+        Route::delete('/{id}/destroy', 'destroy')->name('destroy');
     });
 
     Route::get('/absent', [AbsentController::class, 'index'])->name('absent.index');
@@ -36,8 +53,4 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/insertSchedule', [ScheduleController::class, 'insertSchedule'])->name('insertSchedule');
     Route::post('/updateSchedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('updateSchedule');
     Route::get('/deleteSchedule/{id}', [ScheduleController::class, 'deleteSchedule'])->name('deleteSchedule');
-
-    Route::get('/mahasiswa', function () {
-        return view('student.index');
-    });
 });

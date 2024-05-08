@@ -31,4 +31,8 @@ class User extends Authenticatable
     public function dosen() {
         return $this->hasOne(\App\Models\Dosen::class);
     }
+
+    public function mahasiswa() {
+        return $this->hasOne(\App\Models\Mahasiswa::class);
+    }
 }
