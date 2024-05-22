@@ -84,7 +84,7 @@ class AuthController extends Controller
         }
 
         Auth::user()->update([
-            'fullname' => $request->name,
+            'fullname' => $request->fullname,
             'code' => $request->code
         ]);
 

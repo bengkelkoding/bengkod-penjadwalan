@@ -16,12 +16,12 @@ class Schedule extends Model
         return $this->hasMany(ScheduleSession::class);
     }
 
-    public function scheduleSessionsRelation()
-    {
-        return $this->belongsTo(ScheduleSession::class, 'id', 'schedule_id');
-    }
     public function dosen()
     {
         return $this->belongsTo(Dosen::class, 'dosen_id', 'id');
+    }
+
+    public function mahasiswas() {
+        return $this->belongsToMany(\App\Models\Mahasiswa::class, 'mahasiswa_schedules', 'schedule_id', 'mahasiswa_id');
     }
 }

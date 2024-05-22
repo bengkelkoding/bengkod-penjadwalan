@@ -4,6 +4,7 @@ use App\Constants\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Mahasiswa\ScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,21 +22,20 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::middleware('auth:api')->group(function () {
-    Route::group(['middleware' => 'role:'.UserType::DOSEN, 'prefix' => 'dosen'], function () {
-        Route::get('/dosen', function () {
-            return response()->json(['role' => 'dokter']);
-        });
-    });
-
-    Route::middleware('role:'.UserType::MAHASISWA)->group(function () {
-        Route::get('/mahasiswa', function () {
-            return response()->json(['role' => 'mahasiswa']);
-        });
-    });  
-
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('refresh', [AuthController::class, 'refresh'])->name('refresh');
 
     Route::get('profile', [AuthController::class, 'getMe']);
     Route::put('profile', [AuthController::class, 'update']);
+
+    Route::group(['middleware' => 'role:'.UserType::DOSEN, 'prefix' => 'dosen'], function () {
+        // Route::get('/schedules', function () {});
+    });
+
+    Route::group(['middleware' => 'role:'.UserType::MAHASISWA, 'prefix' => 'mahasiswa'], function () {
+        Route::group(['prefix' => 'schedules'], function () {
+            Route::get('/', [ScheduleController::class, 'index']);
+            Route::get('{scheduleSessionId}', [ScheduleController::class, 'show']);
+        });
+    });
 });
