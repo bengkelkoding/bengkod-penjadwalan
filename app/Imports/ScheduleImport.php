@@ -24,7 +24,7 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
         if (isset($row['nip_dosen']) && $row['nip_dosen'] !== "") {
             $user = User::where('code', $row['nip_dosen'])->where('type', UserType::DOSEN)->first();
 
-            if (! isset($user)) {
+            if (!isset($user)) {
                 $user = User::create([
                     'code' => $row['nip_dosen'],
                     'fullname' => $row['nama_dosen'],
@@ -52,17 +52,17 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
         // Classroom
         $sessionMax = 3;
 
-        for ($i=1; $i<=$sessionMax; $i++) {
-            $hari = trim($row['hari_'.$i]);
-            $jam = trim($row['jam_'.$i]);
-            $ruang = trim($row['ruang_'.$i]);
+        for ($i = 1; $i <= $sessionMax; $i++) {
+            $hari = trim($row['hari_' . $i]);
+            $jam = trim($row['jam_' . $i]);
+            $ruang = trim($row['ruang_' . $i]);
 
             if (
-                ($hari !== "" && $hari !== "-") 
-                && ($jam !== "" && $jam !== "-") 
+                ($hari !== "" && $hari !== "-")
+                && ($jam !== "" && $jam !== "-")
                 && ($ruang !== "" && $ruang !== "-")
             ) {
-                $classroom = Classroom::firstOrCreate([ 'name' => $ruang ]);
+                $classroom = Classroom::firstOrCreate(['name' => $ruang]);
 
                 $time = explode('-', $jam);
 
@@ -70,9 +70,9 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
                     'schedule_id' => $schedule->id,
                     'classroom_id' => $classroom->id,
                     'day' => $hari,
-                    'time_start' => str_replace('.', ':', $time[0]).':00',
-                    'time_end' => str_replace('.', ':', $time[1]).':00'
-                ]); 
+                    'time_start' => str_replace('.', ':', $time[0]) . ':00',
+                    'time_end' => str_replace('.', ':', $time[1]) . ':00'
+                ]);
             }
         }
     }

@@ -98,7 +98,7 @@
                                 {{ $lecture->user->fullname }}
                             </td>
                             <td class="flex gap-2 px-6 py-4">
-                                <button data-modal-target="updateMahasiswa{{ $lecture->id }}" data-modal-show="updateMahasiswa{{ $lecture->id }}" type="button" class="bg-merah text-merah border-merah hover:bg-abu-abu inline-flex items-center rounded-lg border p-2.5 text-center text-sm font-medium hover:text-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                <button data-modal-target="updateDosen{{ $lecture->id }}" data-modal-show="updateDosen{{ $lecture->id }}" type="button" class="bg-merah text-merah border-merah hover:bg-abu-abu inline-flex items-center rounded-lg border p-2.5 text-center text-sm font-medium hover:text-red-800 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                     <svg class="text-putih h-5 w-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd" d="M11.3 6.2H5a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h11c1.1 0 2-1 2-2.1V11l-4 4.2c-.3.3-.7.6-1.2.7l-2.7.6c-1.7.3-3.3-1.3-3-3.1l.6-2.9c.1-.5.4-1 .7-1.3l3-3.1Z" clip-rule="evenodd" />
                                         <path fill-rule="evenodd" d="M19.8 4.3a2.1 2.1 0 0 0-1-1.1 2 2 0 0 0-2.2.4l-.6.6 2.9 3 .5-.6a2.1 2.1 0 0 0 .6-1.5c0-.2 0-.5-.2-.8Zm-2.4 4.4-2.8-3-4.8 5-.1.3-.7 3c0 .3.3.7.6.6l2.7-.6.3-.1 4.7-5Z" clip-rule="evenodd" />
@@ -165,7 +165,7 @@
 
     @foreach ($lectures as $lecture)
         <!-- Edit Dosen -->
-        <div id="updateMahasiswa{{ $lecture->id }}" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0">
+        <div id="updateDosen{{ $lecture->id }}" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0">
             <div class="relative max-h-full w-full max-w-2xl">
                 <!-- Modal content -->
                 <form class="relative rounded-lg bg-white shadow dark:bg-gray-700" action="{{ route('dosen.update', $lecture->id) }}" method="POST" enctype="multipart/form-data">
@@ -174,9 +174,9 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Edit Mahasiswa
+                            Edit Dosen
                         </h3>
-                        <button type="button" class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateMahasiswa{{ $lecture->id }}">
+                        <button type="button" class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateDosen{{ $lecture->id }}">
                             <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
