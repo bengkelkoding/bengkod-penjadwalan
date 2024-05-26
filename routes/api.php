@@ -4,7 +4,9 @@ use App\Constants\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\Mahasiswa\ScheduleController;
+use App\Http\Controllers\Api\Dosen\ScheduleController as DosenScheduleController;
+use App\Http\Controllers\Api\Dosen\PresenceController as DosenPresenceController;
+use App\Http\Controllers\Api\Mahasiswa\ScheduleController as MahasiswaScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +31,18 @@ Route::middleware('auth:api')->group(function () {
     Route::put('profile', [AuthController::class, 'update']);
 
     Route::group(['middleware' => 'role:'.UserType::DOSEN, 'prefix' => 'dosen'], function () {
-        // Route::get('/schedules', function () {});
+        Route::group(['prefix' => 'schedules'], function () {
+            Route::get('/', [DosenScheduleController::class, 'index']);
+            Route::get('{scheduleSessionId}', [DosenScheduleController::class, 'show']);
+
+            Route::post('{scheduleSessionId}/presences/{presenceId}/generate-qr', [DosenPresenceController::class, 'generateQR']);
+        });
     });
 
     Route::group(['middleware' => 'role:'.UserType::MAHASISWA, 'prefix' => 'mahasiswa'], function () {
         Route::group(['prefix' => 'schedules'], function () {
-            Route::get('/', [ScheduleController::class, 'index']);
-            Route::get('{scheduleSessionId}', [ScheduleController::class, 'show']);
+            Route::get('/', [MahasiswaScheduleController::class, 'index']);
+            Route::get('{scheduleSessionId}', [MahasiswaScheduleController::class, 'show']);
         });
     });
 });

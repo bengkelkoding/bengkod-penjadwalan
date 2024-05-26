@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Mahasiswa;
 
+use App\Constants\UserType;
 use App\Transformers\ScheduleSessionCollection;
 use App\Transformers\PresenceCollection;
 use App\Http\Controllers\Controller;
@@ -82,7 +83,7 @@ class ScheduleController extends Controller
             'absence_count' => $absenceNoReason + $absenceWithReason,
             'absence_with_reason_count' => $absenceWithReason,
             'absence_no_reason_count' => $absenceNoReason,
-            'presences' => PresenceCollection::collection($presences)
+            'presences' => PresenceCollection::customCollection($presences, UserType::MAHASISWA)
         ]);
     }
 }
