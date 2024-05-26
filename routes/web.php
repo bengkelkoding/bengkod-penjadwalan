@@ -54,9 +54,11 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/absent', [AbsentController::class, 'index'])->name('absent.index');
     Route::get('/absent/absentRequest', [AbsentController::class, 'absentRequest'])->name('absentRequest');
 
-    Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule.index');
-    Route::post('/schedules/import', [ScheduleController::class, 'import'])->name('schedule.import');
-    Route::post('/insertSchedule', [ScheduleController::class, 'insertSchedule'])->name('insertSchedule');
-    Route::post('/updateSchedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('updateSchedule');
-    Route::get('/deleteSchedule/{id}', [ScheduleController::class, 'deleteSchedule'])->name('deleteSchedule');
+    Route::group(['prefix' => 'schedules', 'as' => 'schedule.', 'controller' => ScheduleController::class], function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/import', 'import')->name('import');
+        Route::post('/insertSchedule', 'insertSchedule')->name('store');
+        Route::post('/updateSchedule/{id}', 'updateSchedule')->name('update');
+        Route::get('/deleteSchedule/{id}', 'deleteSchedule')->name('destroy');
+    });
 });
