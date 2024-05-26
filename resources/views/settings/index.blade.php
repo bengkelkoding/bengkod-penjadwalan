@@ -33,11 +33,7 @@
             @forelse ($settings as $setting)
                 <div class="grid grid-cols-4 gap-3 md:grid-cols-4">
                     <div class="col-span-8 md:col-span-2">
-                        @if (in_array($setting->key, ['jumlah_pertemuan', 'start_perkuliahan']))
-                            <label for="name" class="mb-2 block text-sm font-medium text-red-500 dark:text-red-500">{{ $setting->key }} *</label>
-                        @else
-                            <label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">{{ $setting->key }}</label>
-                        @endif
+                        <label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">{{ $setting->key }}</label>
 
 
                         @if ($setting->key == 'start_perkuliahan')
@@ -53,8 +49,6 @@
             @empty
                 <p>Belum ada data pengaturan.</p>
             @endforelse
-
-            <p class="text-sm font-medium text-red-500 dark:text-red-500">(*) mengubahnya dapat menghapus data pertemuan dan presensi yang sudah ada.</p>
         </div>
         @error('schedule_file')
             <div class="ms-3 text-sm font-normal">{{ $message }}</div>
