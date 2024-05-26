@@ -32,9 +32,22 @@ if (!function_exists('getSettingValue')) {
     function getSettingValue($keyName)
     {
         $setting = AdminSetting::where('key', $keyName)->first();
-        if (!isset($setting)) 
+        if (!isset($setting)) {
             return null;
+        }
 
         return $setting->value;
+    }
+}
+
+if (!function_exists('getEnumValues')) {
+    function getEnumValues($table, $field)
+    {
+        $type = DB::select('SHOW COLUMNS FROM ' . $table . ' WHERE Field = ?', [$field]);
+        //die("type : ".json_encode($type));
+        preg_match("/^enum\(\'(.*)\'\)$/", $type[0]->{"Type"}, $matches);
+        $enum = explode("','", $matches[1]);
+
+        return $enum;
     }
 }

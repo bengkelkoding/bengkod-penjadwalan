@@ -28,7 +28,6 @@ class BaseConstant
 
     public static function getId($index)
     {
-        $index = strtolower($index);
         if (array_key_exists($index, static::getIds())) {
             return static::getIds()[$index];
         }

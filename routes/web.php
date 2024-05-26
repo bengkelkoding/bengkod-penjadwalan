@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DosenController;
 use App\Http\Controllers\Admin\AbsentController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\MahasiswaController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -22,6 +23,11 @@ Route::middleware('auth:web')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('auth.logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    Route::group(['prefix' => 'settings', 'as' => 'setting.', 'controller' => SettingController::class], function () {
+        Route::get('/', 'index')->name('index');
+        Route::put('/update', 'update')->name('update');
+    });
 
     Route::group(['prefix' => 'classrooms', 'as' => 'classroom.', 'controller' => ClassroomController::class], function () {
         Route::get('/', 'index')->name('index');
