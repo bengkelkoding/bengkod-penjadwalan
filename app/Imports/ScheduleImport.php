@@ -12,6 +12,7 @@ use App\Models\ScheduleSession;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Carbon\Carbon;
 
 class ScheduleImport implements OnEachRow, WithHeadingRow
 {
@@ -50,7 +51,7 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
         ]);
 
         // Classroom
-        $sessionMax = 3;
+        $sessionMax = getSettingValue('absence_max_limit');
 
         for ($i = 1; $i <= $sessionMax; $i++) {
             $hari = trim($row['hari_' . $i]);
@@ -66,14 +67,42 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
 
                 $time = explode('-', $jam);
 
-                ScheduleSession::create([
+                $session = ScheduleSession::create([
                     'schedule_id' => $schedule->id,
                     'classroom_id' => $classroom->id,
                     'day' => $hari,
                     'time_start' => str_replace('.', ':', $time[0]) . ':00',
                     'time_end' => str_replace('.', ':', $time[1]) . ':00'
                 ]);
+
+                $this->createPresenceForSession($session);
             }
         }
+    }
+
+    private function createPresenceForSession($session)
+    {
+        $startPerkuliahan = getSettingValue('start_perkuliahan') ?? Carbon::now()->format('Y-m-d');
+        $jumlahPertemuan = getSettingValue('jumlah_pertemuan') ?? 14;
+
+        $insertData = [];
+        for ($i = 1; $i <= $jumlahPertemuan; $i++) {
+            $value = [
+                'week' => $i,
+                'is_enabled' => true,
+            ];
+
+            if ($i == 1) {
+                $value = array_merge($value, [
+                    'qr_is_generated' => true,
+                    'qr_code' => generateQrCode(),
+                    'qr_generated_at' => now(),
+                ]);
+            }
+
+            $insertData[] = $value;
+        }
+
+        $session->presences()->createMany($insertData);
     }
 }
