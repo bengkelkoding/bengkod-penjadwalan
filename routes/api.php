@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Dosen\ScheduleController as DosenScheduleController;
 use App\Http\Controllers\Api\Dosen\PresenceController as DosenPresenceController;
+
 use App\Http\Controllers\Api\Mahasiswa\ScheduleController as MahasiswaScheduleController;
+use App\Http\Controllers\Api\Mahasiswa\PresenceController as MahasiswaPresenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +46,7 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/', [MahasiswaScheduleController::class, 'index']);
             Route::get('{scheduleSessionId}', [MahasiswaScheduleController::class, 'show']);
         });
+
+        Route::post('scan', [MahasiswaPresenceController::class, 'scan']);
     });
 });
