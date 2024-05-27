@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Constants\DayConstant;
 use App\Models\User;
 use App\Models\Dosen;
 use App\Models\Schedule;
@@ -82,14 +83,28 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
 
     private function createPresenceForSession($session)
     {
-        $startPerkuliahan = getSettingValue('start_perkuliahan') ?? Carbon::now()->format('Y-m-d');
+        $startPerkuliahan = Carbon::parse(getSettingValue('start_perkuliahan') ?? Carbon::now()->format('Y-m-d'));
         $jumlahPertemuan = getSettingValue('jumlah_pertemuan') ?? 14;
+
+        // Cari index hari dari startPerkuliahan
+        $startPerkuliahanDayOfWeek = $startPerkuliahan->dayOfWeek;
+        $sessionDayOfWeek = DayConstant::getId($session->day);
+
+        // Tentukan tanggal presensi pertama
+        if ($startPerkuliahanDayOfWeek > $sessionDayOfWeek) {
+            $dayInterval = 7 - ($startPerkuliahanDayOfWeek - $sessionDayOfWeek);
+        } else {
+            $dayInterval = $sessionDayOfWeek - $startPerkuliahanDayOfWeek;
+        }
+
+        $firstPresenceDate = $startPerkuliahan->copy()->addDays($dayInterval);
 
         $insertData = [];
         for ($i = 1; $i <= $jumlahPertemuan; $i++) {
             $value = [
                 'week' => $i,
                 'is_enabled' => true,
+                'presence_date' => $firstPresenceDate->copy()->addDays(7 * ($i - 1))->format('Y-m-d')
             ];
 
             if ($i == 1) {
