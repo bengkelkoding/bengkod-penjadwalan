@@ -24,49 +24,13 @@ class SettingController extends Controller
     {
         try {
             DB::beginTransaction();
-            
+
             foreach ($request->setting_values as $idx => $setting_value) {
                 if ($request->setting_keys[$idx] == 'start_perkuliahan') {
-                    $startPerkuliahan = $setting_value;
-                    $existingStartPerkuliahan = AdminSetting::where('key', 'start_perkuliahan')->first();
-
-                    if ($startPerkuliahan != $existingStartPerkuliahan->value) {
-                        $startPerkuliahan = Carbon::parse($startPerkuliahan)->locale('id');
-                        $weekIndex = $startPerkuliahan->dayOfWeek;
-
-                        $sessions = ScheduleSession::has('presences')
-                            ->with([
-                                'presences' => function ($q) {
-                                    $q->orderBy('week');
-                                },
-                            ])
-                            ->get();
-
-                        foreach ($sessions as $session) {
-                            $existingWeekIndex = DayConstant::getId($session->day);
-
-                            $firstPresenceDate = $startPerkuliahan;
-
-                            if ($weekIndex > $existingWeekIndex) {
-                                $dayInterval = 7 - ($weekIndex - $existingWeekIndex);
-                                $firstPresenceDate->addDays($dayInterval);
-                            } else {
-                                $firstPresenceDate->addDays($existingWeekIndex - $weekIndex);
-                            }
-
-                            foreach ($session->presences as $presence) {
-                                if ($presence->week > 1) {
-                                    $firstPresenceDate->addDays(7 * ($presence->week - 1));
-                                }
-
-                                $dateUpdate = $firstPresenceDate;
-
-                                $presence->update([
-                                    'presence_date' => $dateUpdate->format('Y-m-d'),
-                                ]);
-                            }
-                        }
-                    }
+                    $this->populatePresenceDate($setting_value);
+                } 
+                else if ($request->setting_keys[$idx] == 'jumlah_pertemuan') {
+                    
                 }
 
                 AdminSetting::updateOrCreate(['key' => $request->setting_keys[$idx]], ['value' => $setting_value]);
@@ -82,5 +46,49 @@ class SettingController extends Controller
         }
 
         return redirect()->back()->with('success', 'Berhasil edit data');
+    }
+
+    private function populatePresenceDate($setting_value)
+    {
+        $startPerkuliahan = $setting_value;
+        $existingStartPerkuliahan = AdminSetting::where('key', 'start_perkuliahan')->first();
+
+        if ($startPerkuliahan != $existingStartPerkuliahan->value) {
+            $startPerkuliahan = Carbon::parse($startPerkuliahan)->locale('id');
+            $weekIndex = $startPerkuliahan->dayOfWeek;
+
+            $sessions = ScheduleSession::has('presences')
+                ->with([
+                    'presences' => function ($q) {
+                        $q->orderBy('week');
+                    },
+                ])
+                ->get();
+
+            foreach ($sessions as $session) {
+                $existingWeekIndex = DayConstant::getId($session->day);
+
+                $firstPresenceDate = $startPerkuliahan;
+
+                if ($weekIndex > $existingWeekIndex) {
+                    $dayInterval = 7 - ($weekIndex - $existingWeekIndex);
+                    $firstPresenceDate->addDays($dayInterval);
+                } else {
+                    $firstPresenceDate->addDays($existingWeekIndex - $weekIndex);
+                }
+
+                foreach ($session->presences as $presence) {
+                    if ($presence->week > 1) {
+                        $firstPresenceDate->addDays(7 * ($presence->week - 1));
+                    }
+
+                    $dateUpdate = $firstPresenceDate;
+
+                    $presence->update([
+                        'presence_date' => $dateUpdate->format('Y-m-d'),
+                    ]);
+                }
+            }
+        }
     }
 }
