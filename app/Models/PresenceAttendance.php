@@ -14,4 +14,8 @@ class PresenceAttendance extends Model
     public function presence() {
         return $this->belongsTo(\App\Models\Presence::class);
     }
+
+    public function mahasiswa() {
+        return $this->belongsTo(\App\Models\Mahasiswa::class);
+    }
 }

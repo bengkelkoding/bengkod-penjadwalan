@@ -32,15 +32,20 @@ Route::middleware('auth:api')->group(function () {
     Route::get('profile', [AuthController::class, 'getMe']);
     Route::put('profile', [AuthController::class, 'update']);
 
+    // Dosen
     Route::group(['middleware' => 'role:'.UserType::DOSEN, 'prefix' => 'dosen'], function () {
         Route::group(['prefix' => 'schedules'], function () {
             Route::get('/', [DosenScheduleController::class, 'index']);
             Route::get('{scheduleSessionId}', [DosenScheduleController::class, 'show']);
 
-            Route::post('{scheduleSessionId}/presences/{presenceId}/generate-qr', [DosenPresenceController::class, 'generateQR']);
+            Route::group(['prefix' => '{scheduleSessionId}/presences/{presenceId}', 'controller' => DosenPresenceController::class], function () {
+                Route::get('/', 'show');
+                Route::post('generate-qr', 'generateQR');
+            });
         });
     });
 
+    // Mahasiswa
     Route::group(['middleware' => 'role:'.UserType::MAHASISWA, 'prefix' => 'mahasiswa'], function () {
         Route::group(['prefix' => 'schedules'], function () {
             Route::get('/', [MahasiswaScheduleController::class, 'index']);

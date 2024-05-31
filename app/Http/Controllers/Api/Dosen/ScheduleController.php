@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ScheduleSession;
 use Illuminate\Support\Facades\Auth;
-use App\Transformers\PresenceCollection;
+use App\Transformers\PresenceDosenCollection;
 use App\Transformers\ScheduleSessionCollection;
 
 class ScheduleController extends Controller
@@ -43,7 +43,8 @@ class ScheduleController extends Controller
 
         return composeReply(true, 'Success', [
             'schedule' => new ScheduleSessionCollection($schedule),
-            'presences' => PresenceCollection::customCollection($presences, UserType::DOSEN)
+            'students' => $schedule->schedule->mahasiswas,
+            'presences' => PresenceDosenCollection::collection($presences)
         ]);
     }
 }

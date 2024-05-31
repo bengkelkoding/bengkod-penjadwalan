@@ -5,10 +5,41 @@ namespace App\Http\Controllers\Api\Dosen;
 use App\Http\Controllers\Controller;
 use App\Models\Presence;
 use Illuminate\Support\Facades\Auth;
+use App\Constants\UserType;
 use Illuminate\Http\Request;
+use App\Transformers\PresenceDosenCollection;
 
 class PresenceController extends Controller
 {
+    public function show($scheduleSessionId, $presenceId) {
+        $presence = Presence::whereHas('scheduleSession', function ($q) use ($scheduleSessionId) {
+            $q->where('id', $scheduleSessionId)->whereHas('schedule', function ($q2) {
+                $q2->whereHas('dosen', function ($q3) {
+                    $q3->where('user_id', Auth::user()->id);
+                });
+            });
+        })
+        ->with('scheduleSession.schedule.mahasiswas.user', 'presenceAttendances.mahasiswa.user', 'presenceAbsences.mahasiswa.user')
+        ->findOrFail($presenceId);
+
+        $approvedAbsences = [];
+        $pendingAbsences = [];
+        foreach ($presence->presenceAbsences as $abs) {
+            if ($abs->is_approved) 
+                $approvedAbsences[] = $abs;
+            else 
+                $pendingAbsences[] = $abs;
+        }
+
+        return composeReply(true, 'Success', [
+            'presence' => new PresenceDosenCollection($presence),
+            'students' => $presence->scheduleSession->schedule->mahasiswas,
+            'attendances' => $presence->presenceAttendances,
+            'approved_absences' => $approvedAbsences,
+            'pending_absences' => $pendingAbsences
+        ]);
+    }
+
     public function generateQR($scheduleSessionId, $presenceId)
     {
         $presence = Presence::whereHas('scheduleSession', function ($q) use ($scheduleSessionId) {

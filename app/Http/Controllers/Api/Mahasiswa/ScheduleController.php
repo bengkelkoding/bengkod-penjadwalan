@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Mahasiswa;
 
 use App\Constants\UserType;
 use App\Transformers\ScheduleSessionCollection;
-use App\Transformers\PresenceCollection;
+use App\Transformers\PresenceMhsCollection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ScheduleSession;
@@ -79,11 +79,11 @@ class ScheduleController extends Controller
             'schedule' => new ScheduleSessionCollection($schedule),
             'all_presence_count' => $allPresencesCount,
             'attended_presence_count' => $attendedPresence,
-            'absence_max_limit' => 3,
+            'absence_max_limit' => getSettingValue('absence_max_limit'),
             'absence_count' => $absenceNoReason + $absenceWithReason,
             'absence_with_reason_count' => $absenceWithReason,
             'absence_no_reason_count' => $absenceNoReason,
-            'presences' => PresenceCollection::customCollection($presences, UserType::MAHASISWA)
+            'presences' => PresenceMhsCollection::collection($presences)
         ]);
     }
 }
