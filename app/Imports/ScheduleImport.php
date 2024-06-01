@@ -29,7 +29,7 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
             if (!isset($user)) {
                 $user = User::create([
                     'code' => $row['nip_dosen'],
-                    'fullname' => $row['nama_dosen'],
+                    'fullname' => trim($row['nama_dosen']),
                     'type' => UserType::DOSEN,
                     'password' => Hash::make('12345678')
                 ]);
@@ -41,20 +41,18 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
         }
 
         // Schedule
-        $schedule = Schedule::create([
-            'dosen_id' => isset($user) ? $user->dosen->id : null,
+        $schedule = Schedule::firstOrCreate([
             'kode_matkul' => $row['kdmk'],
             'nama_matkul' => $row['nama_matkul'],
-            'kode_kelompok' => $row['klpk'],
+            'kode_kelompok' => $row['klpk']
+        ], [
+            'dosen_id' => isset($user) ? $user->dosen->id : null,
             'sks' => $row['sks'],
             'kuota' => $row['kuota'],
             'jumlah_mahasiswa' => $row['jml_mhs']
         ]);
 
-        // Classroom
-        $sessionMax = getSettingValue('absence_max_limit');
-
-        for ($i = 1; $i <= $sessionMax; $i++) {
+        for ($i = 1; $i <= 3; $i++) {
             $hari = trim($row['hari_' . $i]);
             $jam = trim($row['jam_' . $i]);
             $ruang = trim($row['ruang_' . $i]);
@@ -68,7 +66,7 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
 
                 $time = explode('-', $jam);
 
-                $session = ScheduleSession::create([
+                $session = ScheduleSession::firstOrCreate([
                     'schedule_id' => $schedule->id,
                     'classroom_id' => $classroom->id,
                     'day' => $hari,
@@ -76,7 +74,8 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
                     'time_end' => str_replace('.', ':', $time[1]) . ':00'
                 ]);
 
-                $this->createPresenceForSession($session);
+                if (count($session->presences) == 0)
+                    $this->createPresenceForSession($session);
             }
         }
     }
@@ -101,21 +100,11 @@ class ScheduleImport implements OnEachRow, WithHeadingRow
 
         $insertData = [];
         for ($i = 1; $i <= $jumlahPertemuan; $i++) {
-            $value = [
+            $insertData[] = [
                 'week' => $i,
                 'is_enabled' => true,
                 'presence_date' => $firstPresenceDate->copy()->addDays(7 * ($i - 1))->format('Y-m-d')
             ];
-
-            if ($i == 1) {
-                $value = array_merge($value, [
-                    'qr_is_generated' => true,
-                    'qr_code' => generateQrCode(),
-                    'qr_generated_at' => now(),
-                ]);
-            }
-
-            $insertData[] = $value;
         }
 
         $session->presences()->createMany($insertData);

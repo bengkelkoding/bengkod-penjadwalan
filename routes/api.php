@@ -53,5 +53,9 @@ Route::middleware('auth:api')->group(function () {
         });
 
         Route::post('scan', [MahasiswaPresenceController::class, 'scan']);
+        
+        Route::group(['prefix' => 'absences'], function () {
+            Route::post('store', [ MahasiswaPresenceController::class, 'storeAbsence']);
+        });
     });
 });

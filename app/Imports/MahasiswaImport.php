@@ -51,14 +51,15 @@ class MahasiswaImport implements ToCollection, WithStartRow, WithEvents
     {
         if (isset(self::$scheduleId)) {
             foreach ($rows as $row) {
-                $user = User::create([
+                $user = User::firstOrCreate([
                     'code' => $row[2],
                     'fullname' => $row[3],
                     'type' => UserType::MAHASISWA,
-                    'password' => Hash::make('12345678'),
+                ], [
+                    'password' => Hash::make('12345678')
                 ]);
 
-                $mhs = $user->mahasiswa()->create([
+                $mhs = $user->mahasiswa()->firstOrCreate([
                     'nim' => $row[2],
                 ]);
 
