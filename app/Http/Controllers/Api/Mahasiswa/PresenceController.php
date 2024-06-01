@@ -60,8 +60,17 @@ class PresenceController extends Controller
             });
         })->findOrFail($request->presence_id);
 
+        // validasi
+        $absenceExists = $presence->presenceAbsences()
+            ->where('mahasiswa_id', Auth::user()->mahasiswa->id)
+            ->exists();
+        if ($absenceExists) {
+            return composeReply(false, 'Anda sudah mangajukan izin untuk pertemuan ini', []);
+        }
+        
         $insertData = [
             'presence_id' => $presence->id,
+            'mahasiswa_id' => Auth::user()->mahasiswa->id,
             'absence_type' => $request->absence_type,
             'notes' => $request->notes,
             'submitted_by' => UserType::MAHASISWA,
@@ -70,18 +79,15 @@ class PresenceController extends Controller
 
         // upload file
         if ($request->hasFile('absence_letter')) {
-            $fileName = Str::random(5) . now('YmdHis') . '.' . $request->file('absence_letter')->getClientOriginalExtension();
-            $path = 'absence-letters/';
-
-            Storage::put($path . $fileName, $request->file);
+            $fileName = time() . '_' . $request->absence_letter->getClientOriginalName();
+            $path = 'absence-letters';
+            $request->absence_letter->storeAs($path, $fileName, 'public');
 
             $insertData['image'] = $fileName;
         }
 
         $absence = $presence->presenceAbsences()->create($insertData);
 
-        return composeReply(true, 'Success', [
-            'absence' => $absence,
-        ]);
+        return composeReply(true, 'Success', $absence);
     }
 }

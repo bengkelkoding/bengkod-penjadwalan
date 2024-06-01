@@ -9,21 +9,43 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ScheduleSession;
 use Illuminate\Http\Request;
+use App\Models\Schedule;
 
 class ScheduleController extends Controller
 {
     public function index()
     {
-        $schedules = ScheduleSession::whereHas('schedule', function ($q) {
-            $q->whereHas('mahasiswas', function ($q) {
-                $q->where('user_id', Auth::user()->id);
-            });
+        $schedules = Schedule::whereHas('mahasiswas', function ($q) {
+            $q->where('user_id', Auth::user()->id);
         })
-            ->with('schedule.dosen.user', 'classroom')
-            ->orderBy('day')
+            ->with('scheduleSessions.classroom', 'dosen.user')
             ->get();
 
-        return composeReply(true, 'Success', ScheduleSessionCollection::collection($schedules));
+        $res = [];
+        foreach ($schedules as $schedule) {
+            if (count($schedule->scheduleSessions) > 0) {
+                foreach ($schedule->scheduleSessions as $session) {
+                    $temp = $session;
+                    $copy = $schedule;
+                    unset($copy->scheduleSessions);
+                    $temp['schedule'] = $copy;
+
+                    $res[] = (object) $temp;
+                }
+            } 
+            else {
+                $res[] = (object) [
+                    'id' => null,
+                    'day' => null,
+                    'time_start' => null,
+                    'time_end' => null,
+                    'classroom' => null,
+                    'schedule' => $schedule
+                ];
+            }
+        }
+
+        return composeReply(true, 'Success', ScheduleSessionCollection::collection($res));
     }
 
     public function show($scheduleSessionId)
@@ -66,12 +88,16 @@ class ScheduleController extends Controller
 
         $presences = $schedule
             ->presences()
-            ->with(['presenceAttendances' => function ($q) {
-                $q->where('mahasiswa_id', Auth::user()->mahasiswa->id);
-            }])
-            ->with(['presenceAbsences' => function ($q) {
-                $q->where('mahasiswa_id', Auth::user()->mahasiswa->id);
-            }])
+            ->with([
+                'presenceAttendances' => function ($q) {
+                    $q->where('mahasiswa_id', Auth::user()->mahasiswa->id);
+                },
+            ])
+            ->with([
+                'presenceAbsences' => function ($q) {
+                    $q->where('mahasiswa_id', Auth::user()->mahasiswa->id);
+                },
+            ])
             ->orderBy('week')
             ->get();
 
@@ -83,7 +109,7 @@ class ScheduleController extends Controller
             'absence_count' => $absenceNoReason + $absenceWithReason,
             'absence_with_reason_count' => $absenceWithReason,
             'absence_no_reason_count' => $absenceNoReason,
-            'presences' => PresenceMhsCollection::collection($presences)
+            'presences' => PresenceMhsCollection::collection($presences),
         ]);
     }
 }
